@@ -61,6 +61,14 @@ class DatasetHandler(object):
         return users_ratings
     # end
 
+    def id2index(self, movieId):
+        return self.movie_index_to_movie_id.index(movieId)
+    # end
+
+    def indices2ids(self, indices):
+        return [self.movie_index_to_movie_id[index] for index in indices]
+    # end
+
 
 '''
 Driver program to test
