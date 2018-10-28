@@ -35,7 +35,7 @@ class DatasetHandler(object):
         self.movie_index_to_movie_id = []
         movies_vectors = []
         movies_frame = pd.read_csv(
-            os.path.join(self.dataset_path, "movies.csv"), names=["movieId", "title", "genres"]
+            os.path.join(self.dataset_path, "movies.csv"), names=["movieId", "title", "genres"], skiprows=1, header=None
         )
         for _, row in movies_frame.iterrows():
             genres_list = row["genres"].split("|")
@@ -50,10 +50,10 @@ class DatasetHandler(object):
     def load_users_ratings(self):
         users_ratings = {}
         ratings_frame = pd.read_csv(
-            os.path.join(self.dataset_path, "ratings.csv"), names=["userId", "movieId", "rating", "timestamp"]
+            os.path.join(self.dataset_path, "ratings.csv"), names=["userId", "movieId", "rating", "timestamp"], skiprows=1,  header=None
         )
         for _, row in ratings_frame.iterrows():
-            userId = int(row["userId"])
+            userId = int((row["userId"]))
             movieId = int(row["movieId"])
             if userId not in users_ratings:
                 users_ratings[userId] = {}
@@ -67,6 +67,14 @@ class DatasetHandler(object):
 
     def indices2ids(self, indices):
         return [self.movie_index_to_movie_id[index] for index in indices]
+    # end
+
+    def movie_vector2genres(self, movie_vector):
+        return [self.feature_index2genre(i) for i, x in enumerate(movie_vector) if x == 1]
+    # end
+
+    def feature_index2genre(self, feature_index):
+        return genres[feature_index]
     # end
 
 
